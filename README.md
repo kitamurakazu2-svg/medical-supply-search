@@ -1,6 +1,6 @@
 # 診療材料検索PWA（開発初期版）
 
-既存の `/workspace/handwriting-memo` と独立した作業フォルダ。新しいリポジトリ向けの初期構成。GitHub Pagesの公開は未実行。
+既存の `/workspace/handwriting-memo` と独立した作業フォルダ。新しいリポジトリ向けの初期構成。GitHub PagesへGitHub Actionsで公開する構成。
 
 ## 開発
 
@@ -11,16 +11,18 @@ npm ci
 npm run dev
 npm test
 npm run build
+npx playwright install chromium
+npm run test:e2e
 npm run preview
 ```
 
-React + TypeScript + Vite。6品目・2部署の架空データのみ使用。定数量は現在庫数ではない。
+React + TypeScript + Vite。7品目・2部署の架空データのみ使用。定数量は現在庫数ではない。
 
 検索は品目名・品目コード・規格・別名の部分一致。空白区切りでAND検索。NFKC正規化、かな統一、大小文字・区切り記号の吸収。読みや同義語は登録した別名で対応し、任意の誤字を補正する機能はない。
 
 Web Speech APIの対応ブラウザで日本語音声を検索欄へ入力。非対応時は文字入力を利用。認識はブラウザ側のサービスに送信される場合があり、オフライン対応を保証しない。
 
-ビルド時にサービスワーカーとmanifestを生成。初回オンライン読込後、キャッシュが保持されれば検索可能。音声・ホーム画面追加・更新挙動はiPhone/Android実機で検証予定。
+ビルド時にサービスワーカーとmanifestを生成。初回オンライン読込後、キャッシュが保持されれば検索可能。Chromiumのスマホ幅・オフライン検索は自動テスト対象。音声認識・ホーム画面追加・更新挙動はiPhone/Android実機で検証予定。
 
 ## Driveデータの接続方針（未実装）
 
@@ -33,9 +35,9 @@ Web Speech APIの対応ブラウザで日本語音声を検索欄へ入力。非
 
 ## GitHub Pages（承認後）
 
-ユーザーが作成した `medical-supply-search` を使用する。接続権限確認後に初期ソースをpushする。Pages有効化・公開は別途確認後に実行。baseは相対パスでプロジェクトサイトに対応。
+ユーザーが作成した `medical-supply-search` を使用する。接続権限確認後に初期ソースをpushする。PagesのSourceはGitHub Actions。baseは `/medical-supply-search/`。
 
-公開手順: `npm ci` → `npm test` → `npm run build` → `dist/` をGitHub Pagesへ配信。認証なし。自動デプロイ設定はまだ作成していない。
+公開手順: `npm ci` → `npm test` → `npm run build` → `dist/` をGitHub Pagesへ配信。認証なし。`main`へのpushで `.github/workflows/pages.yml` がテスト・ビルド後に公開する。
 
 ## フォルダ構成
 
@@ -45,4 +47,8 @@ Web Speech APIの対応ブラウザで日本語音声を検索欄へ入力。非
 - `src/search.test.ts`: 検索動作の検証
 - `public/`: PWAアイコン
 - `vite.config.ts`: Vite・PWA・相対配信パス設定
-- `.github/workflows/check.yml`: テストとビルドのみ（デプロイなし）
+- `.github/workflows/check.yml`: PRのテストとビルド
+- `.github/workflows/pages.yml`: mainのテスト・ビルド・Pages公開
+- `tests/app.spec.ts`: スマホ幅・検索・音声API模擬・オフラインの検証
+
+在庫設定のない架空品目（DEMO-007）は「在庫設定品目ではありません」と表示。部署を選択した場合は、その部署の設定品目だけを表示する。

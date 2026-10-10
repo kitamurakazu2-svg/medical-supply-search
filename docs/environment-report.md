@@ -13,3 +13,7 @@ index.html / app.js / style.css / sw.js / manifest.webmanifest / アイコン / 
 新規フォルダ: /workspace/work/medical-supply-search。React+TypeScript+Vite、架空6品目・2部署。検索、かな等の正規化と登録別名、部署絞り込み、棚・定数量表示、Web Speech API音声入力、スマホ向け表示、PWAビルドを実装。TypeScript検証・ビルド・検索テスト成功。画面・音声・インストール・オフラインは実機未検証。
 
 次の手順はREADME参照。Driveの対象と列、公開許可を確認してから取り込みを実装。独立した新リポジトリを推奨。新規フォルダでGitを初期化し、初期ソースをローカルコミット済み。新リポジトリへのGit接続は403、コネクター一覧には旧リポジトリのみ。アクセス権限確認後にpush予定。Pages公開は別途確認後。旧ファイル削除は不要。
+
+## 接続再確認と実装更新
+
+Git経由で新リポジトリへの読み取り成功。既存mainにはREADMEのみ。7品目へ拡張し、未設定品目表示を追加。Vite baseを /medical-supply-search/ に指定。Pagesワークフローとスマホ向け自動テストを追加。実データ・Drive認証情報は含めていない。
